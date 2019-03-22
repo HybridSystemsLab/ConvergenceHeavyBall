@@ -20,7 +20,6 @@ global lambda_1 gamma_1
 % state
 z1 = x(1);
 z2 = x(2);
-% p = x(3);
 
 % Black box: H could be anything. 
 y1 = [z2 GradientL(z1)];

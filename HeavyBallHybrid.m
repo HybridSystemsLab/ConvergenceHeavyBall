@@ -21,7 +21,7 @@ clear all
 set(0,'defaultTextInterpreter','latex'); %trying to set the default
 
 % global variables
-global gamma_1 lambda_1 delta z1Star1 z1Star2 z1Star3 z1Star4 eta etaPrime etaBar distance
+global gamma_1 lambda_1 delta eta etaPrime etaBar distance timeToDelta_a timeToDeltaIdx_a z1delta_a z2delta_a timeToDelta_b timeToDeltaIdx_b z1delta_b z2delta_b timeToDelta_c timeToDeltaIdx_c z1delta_c z2delta_c timeToDelta_d timeToDeltaIdx_d z1delta_d z2delta_d timeToDelta_e timeToDeltaIdx_e z1delta_e z2delta_e timeToDelta_f timeToDeltaIdx_f z1delta_f z2delta_f timeToDelta_g timeToDeltaIdx_g z1delta_g z2delta_g
 %%%%%%%%%%%%%%%%%%%%%%%
 % setting the globals %
 %%%%%%%%%%%%%%%%%%%%%%%
@@ -33,7 +33,6 @@ lambda_1 = 130; % Gravity.
 
 gamma_1 = 3/4; % Viscous friction to mass ratio.
 
-% These will need to be tuned:
 eta = 0.001;
 etaPrime = 0.002;
 etaBar = 1;
@@ -46,8 +45,7 @@ end
 
 delta = 0.01;
 
-% V0 = 0;
-% V1 = 0;
+setMinima();
 
 %%%%%%%%%%%%%%%%%%%%%%
 % setting the locals %
@@ -165,84 +163,13 @@ options = odeset('RelTol',1e-6,'MaxStep',.1);
 [tg,jg,xg] = HyEQsolver(@f,@g,@C,@D,...
     x0_g,TSPAN,JSPAN,rule,options);
 
-
-% Finding time of convergence for IC: (15,0,0):
-    for i=2:length(xa(:,1))
-        if (((abs(z1Star2 - xa(i,1)) <= delta) && (abs(z1Star2 - xa(i-1,1)) > delta)) || ((abs(z1Star1 - xa(i,1)) <= delta) && (abs(z1Star1 - xa(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xa(i,1)) <= delta) && (abs(z1Star3 - xa(i-1,1)) > delta)) || ((abs(z1Star4 - xa(i,1)) <= delta) && (abs(z1Star4 - xa(i-1,1)) > delta)))
-            timeToDeltaIdx_a = i;
-            z1delta_a = xa(i,1)
-        end
-    end
-    z2delta_a = xa(timeToDeltaIdx_a,2)
-    timeToDelta_a = ta(timeToDeltaIdx_a,1) 
-    
-% Finding time of convergence for IC: (3.82,0,0):
-    for i=2:length(xb(:,1))
-        if (((abs(z1Star2 - xb(i,1)) <= delta) && (abs(z1Star2 - xb(i-1,1)) > delta)) || ((abs(z1Star1 - xb(i,1)) <= delta) && (abs(z1Star1 - xb(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xb(i,1)) <= delta) && (abs(z1Star3 - xb(i-1,1)) > delta)) || ((abs(z1Star4 - xb(i,1)) <= delta) && (abs(z1Star4 - xb(i-1,1)) > delta)))
-            timeToDeltaIdx_b = i;
-            z1delta_b = xb(i,1)
-        end
-    end
-    z2delta_b = xb(timeToDeltaIdx_b,2)
-    timeToDelta_b = tb(timeToDeltaIdx_b,1) 
-    
-% Finding time of convergence for IC: (26.18,0,0):
-    for i=2:length(xc(:,1))
-        if (((abs(z1Star2 - xc(i,1)) <= delta) && (abs(z1Star2 - xc(i-1,1)) > delta)) || ((abs(z1Star1 - xc(i,1)) <= delta) && (abs(z1Star1 - xc(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xc(i,1)) <= delta) && (abs(z1Star3 - xc(i-1,1)) > delta)) || ((abs(z1Star4 - xc(i,1)) <= delta) && (abs(z1Star4 - xc(i-1,1)) > delta)))
-            timeToDeltaIdx_c = i;
-            z1delta_c = xc(i,1)
-        end
-    end
-    z2delta_c = xc(timeToDeltaIdx_c,2)
-    timeToDelta_c = tc(timeToDeltaIdx_c,1) 
-    
-% Finding time of convergence for IC: (6,0,0):
-    for i=2:length(xd(:,1))
-        if (((abs(z1Star2 - xd(i,1)) <= delta) && (abs(z1Star2 - xd(i-1,1)) > delta)) || ((abs(z1Star1 - xd(i,1)) <= delta) && (abs(z1Star1 - xd(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xd(i,1)) <= delta) && (abs(z1Star3 - xd(i-1,1)) > delta)) || ((abs(z1Star4 - xd(i,1)) <= delta) && (abs(z1Star4 - xd(i-1,1)) > delta)))
-            timeToDeltaIdx_d = i;
-            z1delta_d = xd(i,1)
-        end
-    end
-    z2delta_d = xd(timeToDeltaIdx_d,2)
-    timeToDelta_d = td(timeToDeltaIdx_d,1) 
-    
-% Finding time of convergence for IC: (-1,0,0):
-    for i=2:length(xe(:,1))
-        if (((abs(z1Star2 - xe(i,1)) <= delta) && (abs(z1Star2 - xe(i-1,1)) > delta)) || ((abs(z1Star1 - xe(i,1)) <= delta) && (abs(z1Star1 - xe(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xe(i,1)) <= delta) && (abs(z1Star3 - xe(i-1,1)) > delta)) || ((abs(z1Star4 - xe(i,1)) <= delta) && (abs(z1Star4 - xe(i-1,1)) > delta)))
-            timeToDeltaIdx_e = i;
-            z1delta_e = xe(i,1)
-        end
-    end
-    z2delta_e = xe(timeToDeltaIdx_e,2)
-    timeToDelta_e = te(timeToDeltaIdx_e,1) 
-    
-    
-% Finding time of convergence for IC: (31,0,0):
-    for i=2:length(xf(:,1))
-        if (((abs(z1Star2 - xf(i,1)) <= delta) && (abs(z1Star2 - xf(i-1,1)) > delta)) || ((abs(z1Star1 - xf(i,1)) <= delta) && (abs(z1Star1 - xf(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xf(i,1)) <= delta) && (abs(z1Star3 - xf(i-1,1)) > delta)) || ((abs(z1Star4 - xf(i,1)) <= delta) && (abs(z1Star4 - xf(i-1,1)) > delta)))
-            timeToDeltaIdx_f = i;
-            z1delta_f = xf(i,1)
-        end
-    end
-    z2delta_f = xf(timeToDeltaIdx_f,2)
-    timeToDelta_f = tf(timeToDeltaIdx_f,1) 
-    
-    % Finding time of convergence for IC: (24,0,0):
-    for i=2:length(xg(:,1))
-        if (((abs(z1Star2 - xg(i,1)) <= delta) && (abs(z1Star2 - xg(i-1,1)) > delta)) || ((abs(z1Star1 - xg(i,1)) <= delta) && (abs(z1Star1 - xg(i-1,1)) > delta)) ...
-                || ((abs(z1Star3 - xg(i,1)) <= delta) && (abs(z1Star3 - xg(i-1,1)) > delta)) || ((abs(z1Star4 - xg(i,1)) <= delta) && (abs(z1Star4 - xg(i-1,1)) > delta)))
-            timeToDeltaIdx_g = i;
-            z1delta_g = xg(i,1)
-        end
-    end
-    z2delta_g = xg(timeToDeltaIdx_g,2)
-    timeToDelta_g = tg(timeToDeltaIdx_g,1) 
+timeToConvA(xa,ta);
+timeToConvB(xb,tb);
+timeToConvC(xc,tc);
+timeToConvD(xd,td);
+timeToConvE(xe,te);
+timeToConvF(xf,tf);
+timeToConvG(xg,tg);
     
  % Prepare the data, to plot multiple hybrid arcs on same plane
  minarc = min([length(xa),length(xb),length(xc),length(xd),length(xe),length(xf),length(xg)]);

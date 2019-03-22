@@ -25,7 +25,7 @@ y1 = [z2 GradientL(z1)];
 
 u = - lambda_1*y1(1) - gamma_1*y1(2); 
 
-if ((u == 0) && p == 1) %y1(1) == 0 && y1(2) == 0
+if ((u == 0) && p == 1) 
     % Choosing at random whether a will be negative or positive. 
     distance = 0;
     while distance == 0
